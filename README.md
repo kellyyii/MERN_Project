@@ -15,6 +15,8 @@ A modern, real-time chat application built with the **MERN stack** (MongoDB, Exp
 <img width="1920" height="1008" alt="image" src="https://github.com/user-attachments/assets/c66f2d61-72f2-4e1d-9626-aa6a68712599" />
 ![Untitled video - Made with Clipchamp](https://github.com/user-attachments/assets/cbaa5f5d-7149-4d6e-936e-2d4162dde8f7)
 ![Untitled video - Made with Clipchamp (1)](https://github.com/user-attachments/assets/d0ee0bdc-7778-413c-a66e-cbee3aacca14)
+<img width="1920" height="1008" alt="image" src="https://github.com/user-attachments/assets/05e53f65-87ba-442e-a000-d8f367b96e31" />
+
 
 
 
