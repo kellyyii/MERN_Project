@@ -1,2 +1,5 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  /* Enable your themes here — list them comma-separated */
+  themes: light --default, dark --prefersdark, cupcake, retro, coffee;
+}
