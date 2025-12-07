@@ -1,10 +1,13 @@
 const User = require("../models/user.model.js");
-const Message = require("../models/user.model.js");
+const Message = require("../models/message.model.js");
+const { getReceiverSocketId, io } = require("../lib/socket.js");
+const cloudinary = require('cloudinary').v2;
 
-const getUserForSidebar = async (req, res) => {
+const getUsersForSidebar = async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: loggedInUserId } }).select("-password");
+
         res.status(200).json(filteredUsers)
     } catch (error) {
         console.error("Error in getUsersForSidebar: ", error.message);
@@ -12,18 +15,18 @@ const getUserForSidebar = async (req, res) => {
     }
 };
 
-const getMessage = async (req, res) => {
+const getMessages = async (req, res) => {
     try {
-        const { id: userToChatId } = req.params
-        const senderId = req.user._id;
+        const { id: userToChatId } = req.params;
+        const myId = req.user._id;
 
         const messages = await Message.find({
             $or: [
-                { senderId: senderId, receiverId: userToChatId },
-                { senderId: userToChatId, receiverId: senderId }
-            ]
+                { senderId: myId, receiverId: userToChatId },
+                { senderId: userToChatId, receiverId: myId },
+            ],
+        });
 
-        })
         res.status(200).json(messages);
     } catch (error) {
         console.log("Error in getMessages controller: ", error.message);
@@ -33,9 +36,9 @@ const getMessage = async (req, res) => {
 
 const sendMessage = async (req, res) => {
     try {
-        const {text, image} = req.body;
-        const { id:receiverId } = req.body;
-        const senderId = req.ser._id;
+        const { text, image } = req.body;
+        const { id: receiverId } = req.params;
+        const senderId = req.user._id;
 
         let imageUrl;
         if (image) {
@@ -46,22 +49,25 @@ const sendMessage = async (req, res) => {
         const newMessage = new Message({
             senderId,
             receiverId,
-            text, 
+            text,
             image: imageUrl,
         });
 
         await newMessage.save();
 
         // realtime functionality =>socket.io
+        const receiverSocketId= getReceiverSocketId(receiverId);
+        if(receiverSocketId) {
+            io.to(receiverSocketId).emit("newMessage", newMessage);
+        }
 
-        res.satatus(201).json(newMeassage);
-
+        res.status(201).json(newMessage);
     } catch (error) {
         console.log("Error in sendMessage controller: ", error.message);
-        res.status(500).json({error: "Internal server error"});
+        res.status(500).json({ error: "Internal server error" });
 
     }
 
 }
 
-module.exports = { getUserForSidebar, getMessage, sendMessage };
+module.exports = { getUsersForSidebar, getMessages, sendMessage };

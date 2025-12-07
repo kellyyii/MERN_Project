@@ -8,7 +8,7 @@ const signup = async (req, res) => {
     try {
 
         if (!userName || !email || !password) {
-            return res.status(400).json({ message: "All field are required" });
+            return res.status(400).json({ message: "All fields are required" });
         }
         if (password.length < 6) {
             return res.status(400).json({ message: "Password must be at least 6 characters" });
@@ -19,7 +19,6 @@ const signup = async (req, res) => {
         if (user) return res.status(400).json({ message: "Email already exists" });
 
         const salt = await bcrypt.genSalt(10);
-
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new User({
@@ -100,7 +99,11 @@ const updateProfile = async (req, res) => {
         }
 
         const uploadResponse = await cloudinary.uploader.upload(profilePic);
-        const updatedUser = await User.findByIdAndUpdate(userId, {profilePic:uploadResponse.secure_url}, {new:true});
+        const updatedUser = await User.findByIdAndUpdate(
+            userId, 
+            {profilePic:uploadResponse.secure_url}, 
+            {new:true}
+        );
 
         res.status(200).json(updatedUser);
 
