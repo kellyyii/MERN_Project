@@ -72,4 +72,12 @@ A modern, real-time chat application built with the **MERN stack** (MongoDB, Exp
 
 ### Installation
 
-//
+//To install, add a .env file in backend folder. 
+Content:
+MONGODB_URI=
+PORT=5001
+JWT_SECRET=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+NODE_ENV=development
