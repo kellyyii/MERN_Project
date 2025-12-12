@@ -1,6 +1,6 @@
-const express = require("express");
-const {protectRoute} = require("../middleware/auth.middleware.js");
-const { getUsersForSidebar, getMessages, sendMessage } = require("../controller/massage.controller.js");
+import express from "express";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import { getMessages, getUsersForSidebar, sendMessage } from "../controllers/message.controller.js";
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router.get("/:id",protectRoute, getMessages);
 
 router.post("/send/:id", protectRoute, sendMessage)
 
-module.exports = router;
+export default router;
